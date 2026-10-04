@@ -1,1 +1,23 @@
-{"bin":{"jev-browser-clef":"src/server.mjs"},"dependencies":{"@jkudish/jev-browser":"^0.8.3","@modelcontextprotocol/server":"^2.3.0","zod":"^4.6.5"},"description":"jev_navigate MCP server with judgments served by Cloudflare Workers AI clef (@cf/cloudflare/clef)","engines":{"node":">=22"},"license":"MIT","name":"jev-browser-clef","scripts":{"start":"node src/server.mjs","test":"node test-transport.mjs"},"type":"module","version":"0.1.0"}
+{
+  "bin": {
+    "jev-browser-clef": "src/server.mjs"
+  },
+  "dependencies": {
+    "@jkudish/jev-browser": "^0.8.3",
+    "@modelcontextprotocol/server": "^2.3.0",
+    "zod": "^4.6.5"
+  },
+  "description": "jev_navigate MCP server with judgments served by Cloudflare Workers AI clef (@cf/cloudflare/clef)",
+  "engines": {
+    "node": ">=22"
+  },
+  "license": "MIT",
+  "name": "jev-browser-clef",
+  "scripts": {
+    "start": "node src/server.mjs",
+    "test": "node test-transport.mjs",
+    "postinstall": "node scripts/patch-typing-cap.mjs"
+  },
+  "type": "module",
+  "version": "0.1.0"
+}

@@ -80,3 +80,27 @@ Returns the final page payload, full step trace with confidences, console/page/n
 ├── package.json
 └── README.md
 ```
+
+## Typing provider (also on Cloudflare Workers AI)
+
+`jev_navigate` needs a small model to generate text for `type_`/`search_`
+actions. Any OpenAI-compatible endpoint works via the upstream
+`compatible-endpoint` branch — no code changes needed:
+
+```bash
+export JEV_BROWSER_TYPE_BASE_URL="https://api.cloudflare.com/client/v4/accounts/<ACCOUNT_ID>/ai/v1"
+export JEV_BROWSER_TYPE_API_KEY="<cloudflare api token>"   # or JEV_CLOUDFLARE_API_TOKEN value
+export JEV_BROWSER_TYPE_MODEL="@cf/google/gemma-4-26b-a4b-it"
+export JEV_BROWSER_TYPE_MAX_TOKENS="300"
+```
+
+`JEV_BROWSER_TYPE_MODEL` accepts any Workers AI model id, e.g.
+`@cf/meta/llama-3.1-8b-instruct` for a cheaper/faster non-reasoning option.
+
+### Why `JEV_BROWSER_TYPE_MAX_TOKENS` exists
+
+Upstream hardcodes `maxOutputTokens: 48` for custom typing endpoints.
+Reasoning models (like `gemma-4-26b-a4b-it`) spend those 48 tokens on
+chain-of-thought and return an empty `content`, so every typing action fails.
+`scripts/patch-typing-cap.mjs` (run automatically on `postinstall`) makes the
+cap configurable: 48 stays the floor, `JEV_BROWSER_TYPE_MAX_TOKENS` raises it.
