@@ -14,6 +14,8 @@ One tool, `jev_navigate`: give it a task and a start URL; a Jev-driven agent nav
 
 **Judgments run on Cloudflare Workers AI `clef`** (`@cf/cloudflare/clef`), a 27B multimodal decision model — via `CLOUDFLARE_API_TOKEN` + `CLOUDFLARE_ACCOUNT_ID` in the server's environment (`JEV_CLOUDFLARE_API_TOKEN` takes precedence when both are set). The browser engine itself is `@jkudish/jev-browser`'s `navigate()`; only the judgment transport is swapped. The result reports `jev_provider: "clef"`.
 
+**Typing also runs on Cloudflare Workers AI** (no OpenAI/etc. key needed): set `JEV_BROWSER_TYPE_BASE_URL=https://api.cloudflare.com/client/v4/accounts/<ACCOUNT_ID>/ai/v1`, `JEV_BROWSER_TYPE_API_KEY` (the Cloudflare token), `JEV_BROWSER_TYPE_MODEL=@cf/google/gemma-4-26b-a4b-it`, and `JEV_BROWSER_TYPE_MAX_TOKENS=300` — the last one because that model reasons before answering and upstream's hardcoded 48-token typing cap would leave every answer empty (`scripts/patch-typing-cap.mjs`, applied on `postinstall`, makes the cap configurable).
+
 **For a real-site interaction task, call `jev_navigate` when it is available** — unless a static fetch suffices, or the task requires a browser session your client already owns. When the tool is registered but unused, agents answer from assumptions about the page instead of evidence from it.
 
 ## Use it when / skip it when
